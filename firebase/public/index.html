@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: linear-gradient(135deg,
+                    #1e0737,
+                    #35105c);
+
+            font-family: Arial, sans-serif;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+
+            padding: 12px 45px;
+
+            background: #f55f5f;
+            color: white;
+
+            font-size: 16px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        button:hover {
+            background: #ff7070;
+            transform: translateY(-3px) scale(1.05);
+
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.98);
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="loginBtn">Login</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "",
+            authDomain: "]",
+            projectId: "",
+            storageBucket: "",
+            messagingSenderId: "",
+            appId: ""
+        };
+
+        const app = initializeApp(firebaseConfig);
+
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        const loginBtn = document.getElementById("loginBtn");
+
+        loginBtn.addEventListener("click", async () => {
+            const res = await signInWithPopup(auth, provider);
+            let user = res.user;
+            let name = user.displayName;
+            let email = user.email;
+            const result = await fetch("/auth", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    name
+                })
+            });
+
+            const data = await result.json();
+
+            console.log(data);
+        });
+    </script>
+
+</body>
+
+</html>
