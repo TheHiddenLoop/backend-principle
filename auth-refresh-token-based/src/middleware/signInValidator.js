@@ -4,7 +4,7 @@ export const signInValidator = [
   body("name")
     .trim()
     .notEmpty()
-    .withMessage("Name is required"),
+    .withMessage("Name is required").optional(),
 
   body("email")
     .trim()

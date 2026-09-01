@@ -10,7 +10,6 @@ const sessionSchema = new mongoose.Schema(
     },
     refreshTokenHash: {
       type: String,
-      required: [true, "Refresh token hash is required"],
       index: true,
     },
     ip: {
